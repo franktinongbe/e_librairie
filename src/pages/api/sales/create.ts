@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return acc + p * Number(it.quantity);
       }, 0);
 
-      const sale = await tx.sale.create({ data: { total, customerEmail: customerEmail || null } });
+      const sale = await tx.sale.create({ data: { total, customerEmail: customerEmail || null, customerId: null } });
 
       for (const it of items) {
         const documentId = Number(it.documentId);
@@ -52,10 +52,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     // Reload sale with items and documents for invoice
-    const saleWithItems = await prisma.sale.findUnique({ where: { id: result.sale.id }, include: { items: { include: { document: true } } } });
+    const saleWithItems = await prisma.sale.findUnique({ where: { id: result.sale.id }, include: { items: { include: { document: true } }, customer: true } });
 
     // Generate PDF
-    const pdfBuffer = await generateInvoicePdf(saleWithItems!, result.invoice);
+    // attach client id/email to sale data for invoice generation
+    const saleForInvoice = { ...saleWithItems, customerId: saleWithItems?.customer?.id, customerEmail: saleWithItems?.customerEmail };
+    const pdfBuffer = await generateInvoicePdf(saleForInvoice as any, result.invoice);
 
     // send email if requested
     if (customerEmail) {

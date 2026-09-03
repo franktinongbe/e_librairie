@@ -18,7 +18,7 @@ model Document {
   price          Float           @default(0)
   stock          Int             @default(0)
   categoryId     Int?
-  category       Category?  @relation(fields: [categoryId], references: [id])
+  category       Category?       @relation(fields: [categoryId], references: [id])
   supplier       Supplier?       @relation(fields: [supplierId], references: [id])
   supplierId     Int?
   createdAt      DateTime        @default(now())
@@ -31,13 +31,13 @@ model Document {
 }
 
 model Supplier {
-  id        Int       @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   name      String
   contact   String?
   address   String?
   articles  Article[]
   documents Document[]
-  createdAt DateTime  @default(now())
+  createdAt DateTime   @default(now())
 }
 
 model Movement {
@@ -81,6 +81,8 @@ model Sale {
   id            Int        @id @default(autoincrement())
   total         Float      @default(0)
   customerEmail String?
+  customerId    Int?
+  customer      User?      @relation(fields: [customerId], references: [id])
   items         SaleItem[]
   invoice       Invoice?
   createdAt     DateTime   @default(now())
@@ -97,11 +99,12 @@ model SaleItem {
 }
 
 model Invoice {
-  id     Int       @id @default(autoincrement())
-  sale   Sale      @relation(fields: [saleId], references: [id])
-  saleId Int       @unique
-  sent   Boolean   @default(false)
-  sentAt DateTime?
+  id        Int      @id @default(autoincrement())
+  sale      Sale     @relation(fields: [saleId], references: [id])
+  saleId    Int      @unique
+  sent      Boolean  @default(false)
+  sentAt    DateTime?
+  createdAt DateTime @default(now())
 }
 
 model User {
@@ -111,6 +114,7 @@ model User {
   passwordHash String
   role         Role       @default(GESTIONNAIRE)
   movements    Movement[]
+  sales        Sale[]     // <- CORRECTION : Relation inverse ajoutée
   createdAt    DateTime   @default(now())
 
   @@index([email])
@@ -132,20 +136,20 @@ enum Role {
 }
 
 model Article {
-  id         Int        @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   title      String
   price      Float
-  stock      Int        @default(0)
-  supplier   Supplier?  @relation(fields: [supplierId], references: [id])
+  stock      Int       @default(0)
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
   supplierId Int?
   movements  Movement[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
   documents Document[]
-  createdAt DateTime  @default(now())
+  createdAt DateTime   @default(now())
 }
