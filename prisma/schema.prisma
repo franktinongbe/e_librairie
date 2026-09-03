@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Document {
+  id             Int             @id @default(autoincrement())
+  title          String
+  reference      String?         @unique
+  author         String?
+  image          String?
+  price          Float           @default(0)
+  stock          Int             @default(0)
+  categoryId     Int?
+  category       Category?  @relation(fields: [categoryId], references: [id])
+  supplier       Supplier?       @relation(fields: [supplierId], references: [id])
+  supplierId     Int?
+  createdAt      DateTime        @default(now())
+  stockMovements StockMovement[]
+  reservations   Reservation[]
+  saleItems      SaleItem[]
+
+  @@index([supplierId])
+  @@index([reference])
+}
+
+model Supplier {
+  id        Int       @id @default(autoincrement())
+  name      String
+  contact   String?
+  address   String?
+  articles  Article[]
+  documents Document[]
+  createdAt DateTime  @default(now())
+}
+
+model Movement {
+  id           Int          @id @default(autoincrement())
+  article      Article      @relation(fields: [articleId], references: [id])
+  articleId    Int
+  type         MovementType
+  quantity     Int
+  movementDate DateTime     @default(now())
+  user         User?        @relation(fields: [userId], references: [id])
+  userId       Int?
+  note         String?
+  createdAt    DateTime     @default(now())
+
+  @@index([articleId])
+  @@index([movementDate])
+}
+
+model StockMovement {
+  id         Int      @id @default(autoincrement())
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId Int
+  quantity   Int
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  @@index([documentId])
+}
+
+model Reservation {
+  id         Int      @id @default(autoincrement())
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId Int
+  userEmail  String
+  quantity   Int
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+}
+
+model Sale {
+  id            Int        @id @default(autoincrement())
+  total         Float      @default(0)
+  customerEmail String?
+  items         SaleItem[]
+  invoice       Invoice?
+  createdAt     DateTime   @default(now())
+}
+
+model SaleItem {
+  id         Int      @id @default(autoincrement())
+  sale       Sale     @relation(fields: [saleId], references: [id])
+  saleId     Int
+  document   Document @relation(fields: [documentId], references: [id])
+  documentId Int
+  quantity   Int
+  unitPrice  Float
+}
+
+model Invoice {
+  id     Int       @id @default(autoincrement())
+  sale   Sale      @relation(fields: [saleId], references: [id])
+  saleId Int       @unique
+  sent   Boolean   @default(false)
+  sentAt DateTime?
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String     @unique
+  passwordHash String
+  role         Role       @default(GESTIONNAIRE)
+  movements    Movement[]
+  createdAt    DateTime   @default(now())
+
+  @@index([email])
+}
+
+enum MovementType {
+  ENTREE
+  SORTIE
+  VENTE
+  RETOUR
+  AJUSTEMENT
+}
+
+enum Role {
+  ADMIN
+  GESTIONNAIRE
+  VENDEUR
+  RESPONSABLE
+}
+
+model Article {
+  id         Int        @id @default(autoincrement())
+  title      String
+  price      Float
+  stock      Int        @default(0)
+  supplier   Supplier?  @relation(fields: [supplierId], references: [id])
+  supplierId Int?
+  movements  Movement[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  documents Document[]
+  createdAt DateTime  @default(now())
+}
