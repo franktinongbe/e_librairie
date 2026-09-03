@@ -24,7 +24,10 @@ export async function getJson(path: string) {
     const err = await parseError(res);
     throw new Error(err.error || JSON.stringify(err) || res.statusText);
   }
-  return res.json();
+  const ct = res.headers.get('content-type') || '';
+  if (ct.includes('application/json')) return res.json();
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { throw new Error(text || 'Unexpected non-JSON response'); }
 }
 
 export async function postJson(path: string, body: any) {
@@ -34,7 +37,10 @@ export async function postJson(path: string, body: any) {
     const err = await parseError(res);
     throw new Error(err.error || JSON.stringify(err) || res.statusText);
   }
-  return res.json();
+  const ct = res.headers.get('content-type') || '';
+  if (ct.includes('application/json')) return res.json();
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { return text || { ok: true }; }
 }
 
 export async function putJson(path: string, body: any) {
@@ -44,7 +50,10 @@ export async function putJson(path: string, body: any) {
     const err = await parseError(res);
     throw new Error(err.error || JSON.stringify(err) || res.statusText);
   }
-  return res.json();
+  const ct = res.headers.get('content-type') || '';
+  if (ct.includes('application/json')) return res.json();
+  const text = await res.text();
+  try { return JSON.parse(text); } catch { return text || { ok: true }; }
 }
 
 export async function deleteJson(path: string, body?: any) {

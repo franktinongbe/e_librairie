@@ -53,7 +53,7 @@ export default function AdminDocumentsPage() {
     setSupplierId('');
   };
 
-  const create = async (e: React.FormEvent) => {
+  const create = async (e: any) => {
     e.preventDefault();
     setErr('');
     setMsg('');
@@ -61,28 +61,27 @@ export default function AdminDocumentsPage() {
     try {
       let imageUrl = image;
 
-      // Si un fichier est sélectionné, on le téléverse en premier
+      // Si un fichier est sélectionné, on le convertit en base64 et on l'envoie à l'API d'upload
       if (imageFile) {
-        const formData = new FormData();
-        formData.append('file', imageFile);
-        const uploadRes = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
+        const toBase64 = (f: File) => new Promise<string>((res, rej) => {
+          const r = new FileReader(); r.onload = () => res(String(r.result)); r.onerror = rej; r.readAsDataURL(f);
         });
-        const uploadData = await uploadRes.json();
-        if (!uploadRes.ok) throw new Error(uploadData.message || 'Échec de l\'upload');
+        const dataUrl = await toBase64(imageFile);
+        const uploadData: any = await postJson('/api/upload', { file: dataUrl, name: imageFile.name });
         imageUrl = uploadData.url;
       }
 
-      await postJson('/api/documents', {
+      const payload: any = {
         title,
         price: parseFloat(price),
         stock: parseInt(stock, 10),
-        image: imageUrl || null,
-        reference: reference || null,
-        categoryId: categoryId ? Number(categoryId) : null,
-        supplierId: supplierId ? Number(supplierId) : null,
-      });
+      };
+      if (imageUrl) payload.image = imageUrl;
+      if (reference) payload.reference = reference;
+      if (categoryId) payload.categoryId = Number(categoryId);
+      if (supplierId) payload.supplierId = Number(supplierId);
+
+      await postJson('/api/documents', payload);
 
       setMsg('Article créé avec succès');
       resetForm();
