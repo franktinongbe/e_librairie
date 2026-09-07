@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import Layout from '../components/Layout';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -93,7 +94,11 @@ export default function Home() {
               {docs.map((d) => (
                 <div key={d.id} className="flex items-center gap-3">
                   <div className="h-16 w-12 overflow-hidden rounded-lg bg-paper-100 ring-1 ring-ink-100 flex items-center justify-center">
-                    {d.image ? <img src={d.image} alt={d.title} className="h-full w-full object-cover" /> : <span className="text-[10px] text-ink-300">Livre</span>}
+                    {d.image ? (
+                      <Image src={d.image} alt={d.title} width={96} height={128} unoptimized className="h-full w-full object-cover" />
+                    ) : (
+                      <span className="text-[10px] text-ink-300">Livre</span>
+                    )}
                   </div>
                   <div className="min-w-0">
                     <div className="truncate font-medium text-ink-600">{d.title}</div>
@@ -118,7 +123,11 @@ export default function Home() {
             {docs.map((d) => (
               <Card key={d.id} className="flex flex-col h-full">
                 <div className="h-56 overflow-hidden rounded-2xl bg-paper-100 mb-4">
-                  {d.image ? <img src={d.image} alt={d.title} className="h-full w-full object-cover" /> : <div className="flex h-full items-center justify-center text-ink-300">Aucune image</div>}
+                  {d.image ? (
+                    <Image src={d.image} alt={d.title} width={640} height={360} unoptimized className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-ink-300">Aucune image</div>
+                  )}
                 </div>
                 <div className="flex flex-1 flex-col">
                   <div className="text-xs uppercase tracking-[0.18em] text-amber-400 mb-2">Edition</div>

@@ -65,11 +65,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     // Reload sale with items and documents for invoice
-    const saleWithItems = await prisma.sale.findUnique({ where: { id: result.sale.id }, include: { items: { include: { document: true } }, customer: true } });
+    const saleWithItems: any = await prisma.sale.findUnique({
+      where: { id: result.sale.id },
+      include: { items: { include: { document: true } }, customer: true }
+    });
 
     // Generate PDF
     // attach client id/email to sale data for invoice generation
-    const saleForInvoice = {
+    const saleForInvoice: any = {
       ...saleWithItems,
       customerId: saleWithItems?.customer?.id,
       customerEmail: saleWithItems?.customerEmail,
@@ -107,7 +110,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               to: alertEmail,
               from: process.env.EMAIL_FROM,
               subject: `Alerte stock faible: ${doc.title}`,
-              text: `Le stock du document \"${doc.title}\" (id: ${doc.id}) est bas: ${doc.stock} unités restantes.`
+              text: `Le stock du document "${doc.title}" (id: ${doc.id}) est bas: ${doc.stock} unités restantes.`
             });
           }
         }

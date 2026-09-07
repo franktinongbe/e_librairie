@@ -14,6 +14,7 @@ model Document {
   title          String
   reference      String?         @unique
   author         String?
+  pageCount      Int?
   price          Float           @default(0)
   stock          Int             @default(0)
   categoryId     Int?
@@ -78,14 +79,17 @@ model Reservation {
 }
 
 model Sale {
-  id            Int        @id @default(autoincrement())
-  total         Float      @default(0)
-  customerEmail String?
-  createdAt     DateTime   @default(now())
-  customerId    Int?
-  invoice       Invoice?
-  customer      User?      @relation(fields: [customerId], references: [id])
-  items         SaleItem[]
+  id              Int        @id @default(autoincrement())
+  total           Float      @default(0)
+  customerName    String?
+  customerPhone   String?
+  customerAddress String?
+  customerEmail   String?
+  createdAt       DateTime   @default(now())
+  customerId      Int?
+  invoice         Invoice?
+  customer        User?      @relation(fields: [customerId], references: [id])
+  items           SaleItem[]
 }
 
 model SaleItem {

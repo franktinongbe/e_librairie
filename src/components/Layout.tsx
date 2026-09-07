@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
 
-export default function Layout({ children, withSidebar = true }: { children: React.ReactNode; withSidebar?: boolean }){
+export default function Layout({ children, withSidebar = true }: { children: ReactNode; withSidebar?: boolean }){
   return (
     <div className="min-h-screen flex flex-col bg-transparent text-ink-700">
       <Navbar />
