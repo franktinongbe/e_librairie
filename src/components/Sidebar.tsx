@@ -17,20 +17,20 @@ export default function Sidebar(){
   },[]);
 
   return (
-    <aside className="w-56 p-4 bg-midnight-800 border-r border-midnight-700 hidden md:block">
-      <ul className="space-y-3">
-        <li><Link href="/dashboard" className="text-midnight-50 hover:text-midnight-100">Accueil tableau</Link></li>
-        <li><Link href="/catalog" className="text-midnight-50 hover:text-midnight-100">Catalogue</Link></li>
-        <li><Link href="/reservations" className="text-midnight-50 hover:text-midnight-100">Réservations</Link></li>
-        <li><Link href="/sales" className="text-midnight-50 hover:text-midnight-100">Ventes</Link></li>
+    <aside className="hidden w-64 border-r border-ink-100 bg-white/70 p-4 backdrop-blur-sm md:block">
+      <ul className="space-y-2">
+        <li><Link href="/dashboard" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Accueil tableau</Link></li>
+        <li><Link href="/catalog" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Catalogue</Link></li>
+        <li><Link href="/reservations" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Réservations</Link></li>
+        <li><Link href="/sales" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Ventes</Link></li>
 
         {isAdmin && (
           <>
-            <li className="mt-4 font-semibold text-sm text-midnight-200">Admin</li>
-            <li><Link href="/admin/documents" className="text-midnight-50 hover:text-midnight-100">Gérer les documents</Link></li>
-            <li><Link href="/admin/categories" className="text-midnight-50 hover:text-midnight-100">Gérer les catégories</Link></li>
-            <li><Link href="/admin/suppliers" className="text-midnight-50 hover:text-midnight-100">Fournisseurs</Link></li>
-            <li><Link href="/admin/invoices" className="text-midnight-50 hover:text-midnight-100">Factures</Link></li>
+            <li className="mt-5 border-t border-ink-100 pt-4 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Admin</li>
+            <li><Link href="/admin/documents" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Gérer les documents</Link></li>
+            <li><Link href="/admin/categories" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Gérer les catégories</Link></li>
+            <li><Link href="/admin/suppliers" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Fournisseurs</Link></li>
+            <li><Link href="/admin/invoices" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Factures</Link></li>
           </>
         )}
       </ul>

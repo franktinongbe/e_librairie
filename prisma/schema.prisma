@@ -14,17 +14,17 @@ model Document {
   title          String
   reference      String?         @unique
   author         String?
-  image          String?
   price          Float           @default(0)
   stock          Int             @default(0)
   categoryId     Int?
-  category       Category?       @relation(fields: [categoryId], references: [id])
-  supplier       Supplier?       @relation(fields: [supplierId], references: [id])
   supplierId     Int?
   createdAt      DateTime        @default(now())
-  stockMovements StockMovement[]
+  image          String?
+  category       Category?       @relation(fields: [categoryId], references: [id])
+  supplier       Supplier?       @relation(fields: [supplierId], references: [id])
   reservations   Reservation[]
   saleItems      SaleItem[]
+  stockMovements StockMovement[]
 
   @@index([supplierId])
   @@index([reference])
@@ -35,22 +35,22 @@ model Supplier {
   name      String
   contact   String?
   address   String?
+  createdAt DateTime   @default(now())
   articles  Article[]
   documents Document[]
-  createdAt DateTime   @default(now())
 }
 
 model Movement {
   id           Int          @id @default(autoincrement())
-  article      Article      @relation(fields: [articleId], references: [id])
   articleId    Int
   type         MovementType
   quantity     Int
   movementDate DateTime     @default(now())
-  user         User?        @relation(fields: [userId], references: [id])
   userId       Int?
   note         String?
   createdAt    DateTime     @default(now())
+  article      Article      @relation(fields: [articleId], references: [id])
+  user         User?        @relation(fields: [userId], references: [id])
 
   @@index([articleId])
   @@index([movementDate])
@@ -58,53 +58,53 @@ model Movement {
 
 model StockMovement {
   id         Int      @id @default(autoincrement())
-  document   Document @relation(fields: [documentId], references: [id])
   documentId Int
   quantity   Int
   reason     String?
   createdAt  DateTime @default(now())
+  document   Document @relation(fields: [documentId], references: [id])
 
   @@index([documentId])
 }
 
 model Reservation {
   id         Int      @id @default(autoincrement())
-  document   Document @relation(fields: [documentId], references: [id])
   documentId Int
   userEmail  String
   quantity   Int
   expiresAt  DateTime
   createdAt  DateTime @default(now())
+  document   Document @relation(fields: [documentId], references: [id])
 }
 
 model Sale {
   id            Int        @id @default(autoincrement())
   total         Float      @default(0)
   customerEmail String?
+  createdAt     DateTime   @default(now())
   customerId    Int?
+  invoice       Invoice?
   customer      User?      @relation(fields: [customerId], references: [id])
   items         SaleItem[]
-  invoice       Invoice?
-  createdAt     DateTime   @default(now())
 }
 
 model SaleItem {
   id         Int      @id @default(autoincrement())
-  sale       Sale     @relation(fields: [saleId], references: [id])
   saleId     Int
-  document   Document @relation(fields: [documentId], references: [id])
   documentId Int
   quantity   Int
   unitPrice  Float
+  document   Document @relation(fields: [documentId], references: [id])
+  sale       Sale     @relation(fields: [saleId], references: [id])
 }
 
 model Invoice {
-  id        Int      @id @default(autoincrement())
-  sale      Sale     @relation(fields: [saleId], references: [id])
-  saleId    Int      @unique
-  sent      Boolean  @default(false)
+  id        Int       @id @default(autoincrement())
+  saleId    Int       @unique
+  sent      Boolean   @default(false)
   sentAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  sale      Sale      @relation(fields: [saleId], references: [id])
 }
 
 model User {
@@ -113,11 +113,30 @@ model User {
   email        String     @unique
   passwordHash String
   role         Role       @default(GESTIONNAIRE)
-  movements    Movement[]
-  sales        Sale[]     // <- CORRECTION : Relation inverse ajoutée
   createdAt    DateTime   @default(now())
+  movements    Movement[]
+  sales        Sale[]
 
   @@index([email])
+}
+
+model Article {
+  id         Int        @id @default(autoincrement())
+  title      String
+  price      Float
+  stock      Int        @default(0)
+  supplierId Int?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  supplier   Supplier?  @relation(fields: [supplierId], references: [id])
+  movements  Movement[]
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  documents Document[]
 }
 
 enum MovementType {
@@ -133,23 +152,4 @@ enum Role {
   GESTIONNAIRE
   VENDEUR
   RESPONSABLE
-}
-
-model Article {
-  id         Int       @id @default(autoincrement())
-  title      String
-  price      Float
-  stock      Int       @default(0)
-  supplier   Supplier? @relation(fields: [supplierId], references: [id])
-  supplierId Int?
-  movements  Movement[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-}
-
-model Category {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  documents Document[]
-  createdAt DateTime   @default(now())
 }

@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const documentCreateSchema = z.object({
   title: z.string().min(1),
   author: z.string().optional(),
+  pageCount: z.preprocess((v) => (v == null || v === '' ? undefined : Number(v)), z.number().int().positive().optional()),
   reference: z.string().optional(),
   image: z.string().optional(),
   price: z.preprocess((v) => Number(v), z.number()),
@@ -13,6 +14,7 @@ export const documentCreateSchema = z.object({
 export const documentUpdateSchema = z.object({
   title: z.string().optional(),
   author: z.string().optional(),
+  pageCount: z.preprocess((v) => (v == null || v === '' ? undefined : Number(v)), z.number().int().positive().optional()),
   reference: z.string().optional(),
   image: z.string().optional(),
   price: z.preprocess((v) => (v == null ? undefined : Number(v)), z.number().optional()),

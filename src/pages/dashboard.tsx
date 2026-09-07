@@ -25,22 +25,29 @@ export default function Dashboard(){
 
   return (
     <Layout>
-      <div className="container py-6">
-        <h2 className="text-2xl font-semibold mb-4 text-midnight-50">Tableau de bord</h2>
+      <div className="container py-8 md:py-10">
+        <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-400">Tableau de bord</p>
+        <h2 className="mb-5 text-3xl font-bold text-ink-700">Vue d’ensemble</h2>
         {stats ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <Card>Documents: <div className="text-2xl font-bold mt-2 text-midnight-50">{stats.documents}</div></Card>
-            <Card>Réservations: <div className="text-2xl font-bold mt-2 text-midnight-50">{stats.reservations}</div></Card>
+          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Card className="p-5">
+              <div className="text-sm uppercase tracking-[0.18em] text-amber-400">Documents</div>
+              <div className="mt-2 text-3xl font-bold text-ink-700">{stats.documents}</div>
+            </Card>
+            <Card className="p-5">
+              <div className="text-sm uppercase tracking-[0.18em] text-amber-400">Réservations</div>
+              <div className="mt-2 text-3xl font-bold text-ink-700">{stats.reservations}</div>
+            </Card>
           </div>
         ) : (
-          <div>Chargement...</div>
+          <div className="mb-6 rounded-[24px] border border-ink-100 bg-white/80 p-4 text-ink-500">Chargement...</div>
         )}
 
-        <h3 className="text-lg font-medium mb-2 text-midnight-50">Derniers documents</h3>
-        <div className="overflow-x-auto">
+        <h3 className="mb-3 text-xl font-semibold text-ink-700">Derniers documents</h3>
+        <div className="overflow-x-auto rounded-[24px] border border-ink-100 bg-white/80 p-2 shadow-[0_16px_40px_rgba(34,29,26,0.04)]">
           <table className="w-full table-auto">
             <thead>
-              <tr className="text-left border-b border-midnight-700">
+              <tr className="border-b border-ink-100 text-left text-sm uppercase tracking-[0.12em] text-ink-400">
                 <th className="px-3 py-2">Id</th>
                 <th className="px-3 py-2">Titre</th>
                 <th className="px-3 py-2">Auteur</th>
@@ -49,11 +56,11 @@ export default function Dashboard(){
             </thead>
             <tbody>
               {docs.map((d) => (
-                <tr key={d.id} className="border-b last:border-b-0 border-midnight-700">
-                  <td className="px-3 py-2">{d.id}</td>
-                  <td className="px-3 py-2 text-midnight-50">{d.title}</td>
-                  <td className="px-3 py-2">{d.author || '-'}</td>
-                  <td className="px-3 py-2">{d.stock}</td>
+                <tr key={d.id} className="border-b last:border-b-0 border-ink-100">
+                  <td className="px-3 py-2 text-ink-500">{d.id}</td>
+                  <td className="px-3 py-2 font-medium text-ink-700">{d.title}</td>
+                  <td className="px-3 py-2 text-ink-500">{d.author || '-'}</td>
+                  <td className="px-3 py-2 text-ink-500">{d.stock}</td>
                 </tr>
               ))}
             </tbody>

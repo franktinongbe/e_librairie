@@ -46,17 +46,20 @@ export default function RegisterPage(){
   }
 
   return (
-    <main className="max-w-md mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4 text-midnight-50">Inscription</h1>
-      {err && <div className="mb-3 text-red-400">{err}</div>}
-      <form onSubmit={submit} className="space-y-4">
-        <Input label="Nom" value={name} onChange={(e)=>setName(e.target.value)} />
-        <Input label="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
-        <Input label="Mot de passe" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
-        <div>
-          <Button type="submit" disabled={loading}>{loading? 'En cours...' : "S'inscrire"}</Button>
-        </div>
-      </form>
+    <main className="container py-12">
+      <div className="mx-auto max-w-md rounded-[28px] border border-ink-100 bg-white/80 p-8 shadow-editorial backdrop-blur-sm">
+        <p className="mb-2 text-xs uppercase tracking-[0.22em] text-amber-400">Rejoignez-nous</p>
+        <h1 className="mb-6 text-3xl font-bold text-ink-700">Inscription</h1>
+        {err && <div className="mb-3 rounded-full bg-red-50 px-3 py-2 text-sm text-red-600">{err}</div>}
+        <form onSubmit={submit} className="space-y-4">
+          <Input label="Nom" value={name} onChange={(e)=>setName(e.target.value)} />
+          <Input label="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
+          <Input label="Mot de passe" type="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
+          <div className="pt-2">
+            <Button type="submit" className="w-full" disabled={loading}>{loading? 'En cours...' : "S'inscrire"}</Button>
+          </div>
+        </form>
+      </div>
     </main>
   );
 }

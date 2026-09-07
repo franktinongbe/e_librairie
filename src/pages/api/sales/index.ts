@@ -11,7 +11,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Admin can list all sales
     if (payload.role === 'ADMIN') {
-      const list = await prisma.sale.findMany({ orderBy: { createdAt: 'desc' }, include: { items: { include: { document: true } } } });
+      const list = await prisma.sale.findMany({
+        orderBy: { createdAt: 'desc' },
+        include: { items: { include: { document: true } }, invoice: true }
+      });
       return res.status(200).json(list);
     }
 
@@ -19,7 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const user = await prisma.user.findUnique({ where: { id: Number(payload.sub) } });
     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    const list = await prisma.sale.findMany({ where: { customerEmail: user.email }, orderBy: { createdAt: 'desc' }, include: { items: { include: { document: true } } } });
+    const list = await prisma.sale.findMany({
+      where: { customerEmail: user.email },
+      orderBy: { createdAt: 'desc' },
+      include: { items: { include: { document: true } }, invoice: true }
+    });
     return res.status(200).json(list);
   } catch (err: any) {
     return res.status(500).json({ error: err.message || 'Server error' });

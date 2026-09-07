@@ -11,8 +11,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Roles allowed to create a sale: VENDEUR, GESTIONNAIRE, ADMIN
     if (!requireRole(req, res, ['VENDEUR', 'GESTIONNAIRE', 'ADMIN'])) return;
-    const { items, customerEmail } = req.body;
+    const { items, customerEmail, customerName, customerPhone, customerAddress } = req.body;
     if (!items || !Array.isArray(items) || items.length === 0) return res.status(400).json({ error: 'items required' });
+    if (!customerEmail || !String(customerEmail).trim()) return res.status(400).json({ error: 'customer email required' });
+    if (!customerName || !String(customerName).trim()) return res.status(400).json({ error: 'customer name required' });
+    if (!customerPhone || !String(customerPhone).trim()) return res.status(400).json({ error: 'customer phone required' });
+    if (!customerAddress || !String(customerAddress).trim()) return res.status(400).json({ error: 'customer address required' });
 
     // Fetch documents
     const docIds = items.map((i: any) => Number(i.documentId));
@@ -33,7 +37,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return acc + p * Number(it.quantity);
       }, 0);
 
-      const sale = await tx.sale.create({ data: { total, customerEmail: customerEmail || null, customerId: null } });
+      const sale = await tx.sale.create({
+        data: {
+          total,
+          customerName: String(customerName || '').trim() || null,
+          customerPhone: String(customerPhone || '').trim() || null,
+          customerAddress: String(customerAddress || '').trim() || null,
+          customerEmail: String(customerEmail || '').trim() || null,
+          customerId: null,
+        }
+      });
 
       for (const it of items) {
         const documentId = Number(it.documentId);
@@ -56,7 +69,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Generate PDF
     // attach client id/email to sale data for invoice generation
-    const saleForInvoice = { ...saleWithItems, customerId: saleWithItems?.customer?.id, customerEmail: saleWithItems?.customerEmail };
+    const saleForInvoice = {
+      ...saleWithItems,
+      customerId: saleWithItems?.customer?.id,
+      customerEmail: saleWithItems?.customerEmail,
+      customerName: saleWithItems?.customerName,
+      customerPhone: saleWithItems?.customerPhone,
+      customerAddress: saleWithItems?.customerAddress,
+    };
     const pdfBuffer = await generateInvoicePdf(saleForInvoice as any, result.invoice);
 
     // send email if requested

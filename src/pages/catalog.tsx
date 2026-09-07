@@ -7,6 +7,7 @@ import Button from '../components/ui/Button';
 
 export default function Catalog() {
   const [docs, setDocs] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     getJson('/api/documents')
@@ -22,7 +23,6 @@ export default function Catalog() {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       cart.push({ documentId: d.id, quantity: 1 });
       localStorage.setItem('cart', JSON.stringify(cart));
-      // redirect to cart
       router.push('/cart');
     }catch(e){
       console.error(e);
@@ -33,7 +33,6 @@ export default function Catalog() {
   function reserveFromCatalog(d: any){
     try{
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-      // mark as reservation
       cart.push({ documentId: d.id, quantity: 1, reserved: true });
       localStorage.setItem('cart', JSON.stringify(cart));
       router.push('/cart');
@@ -41,18 +40,34 @@ export default function Catalog() {
   }
 
   return (
-    <main className="container py-6">
-      <h1 className="text-2xl font-bold mb-4 text-midnight-50">Catalogue</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <main className="container py-8 md:py-10">
+      <div className="mb-6 flex items-end justify-between gap-4">
+        <div>
+          <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-400">Catalogue</p>
+          <h1 className="text-3xl font-bold text-ink-700">Nos éditions</h1>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {docs.map((d) => (
-          <Card key={d.id}>
-            <h3 className="text-lg font-semibold text-midnight-50">{d.title}</h3>
-            <div className="text-sm text-midnight-200 mb-2">{d.author} — {formatCFA(d.price)}</div>
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-midnight-300">Stock: {d.stock}</div>
-              <div className="flex gap-2">
-                <Button onClick={() => addToCart(d)}>Ajouter au panier</Button>
-                <Button onClick={() => reserveFromCatalog(d)} variant="ghost">Réserver</Button>
+          <Card key={d.id} className="flex h-full flex-col p-5">
+            <div className="mb-4 h-52 overflow-hidden rounded-2xl bg-paper-100">
+              {d.image ? (
+                <img src={d.image} alt={d.title} className="h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full items-center justify-center text-sm text-ink-300">Aucune image</div>
+              )}
+            </div>
+            <div className="flex flex-1 flex-col">
+              <div className="mb-2 text-xs uppercase tracking-[0.18em] text-amber-400">Edition</div>
+              <h3 className="text-xl font-semibold text-ink-700">{d.title}</h3>
+              <div className="mt-2 text-sm text-ink-500">{d.author || 'Auteur inconnu'} — {formatCFA(d.price)}</div>
+              <div className="mt-4 flex items-center justify-between border-t border-ink-100 pt-4">
+                <div className="text-sm text-ink-500">Stock: {d.stock}</div>
+                <div className="flex gap-2">
+                  <Button onClick={() => addToCart(d)}>Ajouter</Button>
+                  <Button onClick={() => reserveFromCatalog(d)} variant="ghost">Réserver</Button>
+                </div>
               </div>
             </div>
           </Card>

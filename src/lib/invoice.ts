@@ -12,9 +12,18 @@ export async function generateInvoicePdf(sale: Sale & { items?: any[] }, invoice
   const invoiceDate = invoice && (invoice as any).createdAt ? new Date((invoice as any).createdAt).toISOString() : (sale && (sale as any).createdAt ? new Date((sale as any).createdAt).toISOString() : new Date().toISOString());
   doc.text(`Date: ${invoiceDate}`);
   // Client identifiers
-  if ((sale as any).customerEmail) {
+  if ((sale as any).customerName) {
     doc.moveDown();
-    doc.fontSize(12).text(`Client email: ${(sale as any).customerEmail}`);
+    doc.fontSize(12).text(`Client: ${(sale as any).customerName}`);
+  }
+  if ((sale as any).customerEmail) {
+    doc.fontSize(12).text(`Email: ${(sale as any).customerEmail}`);
+  }
+  if ((sale as any).customerPhone) {
+    doc.fontSize(12).text(`Téléphone: ${(sale as any).customerPhone}`);
+  }
+  if ((sale as any).customerAddress) {
+    doc.fontSize(12).text(`Adresse: ${(sale as any).customerAddress}`);
   }
   if ((sale as any).customerId) {
     doc.fontSize(12).text(`Client id: ${(sale as any).customerId}`);

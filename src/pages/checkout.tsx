@@ -8,6 +8,9 @@ import Card from '../components/ui/Card';
 export default function Checkout() {
   const [cart, setCart] = useState<any[]>([]);
   const [docsMap, setDocsMap] = useState<Record<number, any>>({});
+  const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
+  const [customerAddress, setCustomerAddress] = useState('');
   const [email, setEmail] = useState('');
   const router = useRouter();
 
@@ -22,7 +25,13 @@ export default function Checkout() {
       const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
       if (!token) return alert('Vous devez être connecté pour passer une commande.');
 
-      const res = await postJson('/api/sales/create', { items: cart, customerEmail: email });
+      const res = await postJson('/api/sales/create', {
+        items: cart,
+        customerName,
+        customerPhone,
+        customerAddress,
+        customerEmail: email,
+      });
       localStorage.removeItem('cart');
       router.push(`/order-confirmation?saleId=${res.saleId}`);
     } catch (err: any) {
@@ -35,6 +44,9 @@ export default function Checkout() {
       <h1 className="text-2xl font-bold mb-4 text-midnight-50">Paiement</h1>
       <Card>
         <div className="space-y-4">
+          <Input label="Nom du client" value={customerName} onChange={(e)=>setCustomerName(e.target.value)} />
+          <Input label="Téléphone" value={customerPhone} onChange={(e)=>setCustomerPhone(e.target.value)} />
+          <Input label="Adresse" value={customerAddress} onChange={(e)=>setCustomerAddress(e.target.value)} />
           <Input label="Email client" value={email} onChange={(e)=>setEmail(e.target.value)} />
           <div className="text-right">
             <Button onClick={submit}>Valider la commande</Button>

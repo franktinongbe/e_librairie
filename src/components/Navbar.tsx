@@ -11,7 +11,6 @@ export default function Navbar() {
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     if (token) {
       getJson('/api/auth/me').then(setUser).catch(() => setUser(null));
-      // fetch admin balance if user is admin
       fetchBalance();
     }
   }, []);
@@ -37,37 +36,39 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-midnight-800 text-midnight-50 px-5 py-3 shadow-sm">
-      <div className="container flex items-center justify-between">
-        <div className="font-bold text-lg tracking-wide text-midnight-50">
-          <Link href="/">E-Library</Link>
+    <nav className="border-b border-ink-100 bg-white/80 backdrop-blur-sm text-ink-700 shadow-sm">
+      <div className="container flex items-center justify-between py-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-sm font-bold text-amber-400">E</div>
+          <Link href="/" className="text-xl font-bold tracking-[0.08em] uppercase text-ink-700">E-Library</Link>
         </div>
-        <div className="flex items-center text-sm">
-          <Link href="/catalog" className="ml-4 hover:underline hover:text-midnight-100">Catalogue</Link>
-          <Link href="/cart" className="ml-4 hover:underline hover:text-midnight-100">Panier</Link>
-          <Link href="/dashboard" className="ml-4 hover:underline hover:text-midnight-100">Tableau de bord</Link>
+
+        <div className="hidden items-center gap-6 text-sm font-medium md:flex">
+          <Link href="/catalog" className="text-ink-500 hover:text-ink-700">Catalogue</Link>
+          <Link href="/cart" className="text-ink-500 hover:text-ink-700">Panier</Link>
+          <Link href="/dashboard" className="text-ink-500 hover:text-ink-700">Tableau de bord</Link>
           {user ? (
             <>
-              {user.role === 'ADMIN' && (
-                <>
-                  <Link href="/admin" className="ml-4 hover:underline hover:text-midnight-100">Admin</Link>
-                  <div className="ml-4 text-sm text-midnight-200 flex items-center">
-                    <span className="mr-2">Solde: {balance !== null ? `${balance.toLocaleString('fr-FR')} FCFA` : '—'}</span>
-                    <button onClick={fetchBalance} disabled={loadingBalance} className="ml-2 px-2 py-1 text-xs bg-midnight-600 hover:bg-midnight-500 rounded">
-                      {loadingBalance ? '…' : 'Actualiser'}
-                    </button>
-                  </div>
-                </>
-              )}
-              <button onClick={logout} className="ml-4 underline">Déconnexion</button>
+              {user.role === 'ADMIN' && <Link href="/admin" className="text-ink-500 hover:text-ink-700">Admin</Link>}
+              <button onClick={logout} className="text-ink-500 hover:text-ink-700">Déconnexion</button>
             </>
           ) : (
             <>
-              <Link href="/login" className="ml-4 hover:underline hover:text-midnight-100">Se connecter</Link>
-              <Link href="/register" className="ml-4 hover:underline hover:text-midnight-100">S'inscrire</Link>
+              <Link href="/login" className="text-ink-500 hover:text-ink-700">Connexion</Link>
+              <Link href="/register" className="text-ink-500 hover:text-ink-700">Inscription</Link>
             </>
           )}
         </div>
+
+        {user?.role === 'ADMIN' && (
+          <div className="hidden items-center gap-2 rounded-full bg-paper-100 px-3 py-2 text-xs text-ink-500 md:flex">
+            <span>Solde:</span>
+            <span className="font-semibold text-ink-700">{balance !== null ? `${balance.toLocaleString('fr-FR')} FCFA` : '—'}</span>
+            <button onClick={fetchBalance} disabled={loadingBalance} className="rounded-full bg-white px-2 py-1 text-[10px] font-medium text-ink-600">
+              {loadingBalance ? '…' : 'Actualiser'}
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );

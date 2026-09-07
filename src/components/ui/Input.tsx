@@ -5,8 +5,8 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 export default function Input({ label, className = '', ...rest }: Props){
   return (
     <label className="block text-sm">
-      {label && <span className="block text-midnight-100 mb-1">{label}</span>}
-      <input className={`w-full rounded-md px-3 py-2 bg-midnight-800 border border-midnight-700 text-midnight-50 placeholder-midnight-600 focus:outline-none focus:ring-2 focus:ring-midnight-300 ${className}`} {...rest} />
+      {label && <span className="mb-1 block font-medium text-ink-600">{label}</span>}
+      <input className={`w-full rounded-full border border-ink-100 bg-white px-4 py-2.5 text-ink-700 placeholder:text-ink-300 focus:outline-none focus:ring-2 focus:ring-amber-200 ${className}`} {...rest} />
     </label>
   )
 }

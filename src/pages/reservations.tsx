@@ -24,13 +24,14 @@ export default function ReservationsPage() {
   }
 
   return (
-    <main className="container py-6">
-      <h1 className="text-2xl font-bold mb-4 text-midnight-50">Réservations</h1>
-      <Card>
-        <div className="space-y-3">
+    <main className="container py-8 md:py-10">
+      <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-400">Réservations</p>
+      <h1 className="mb-6 text-3xl font-bold text-ink-700">Réserver un titre</h1>
+      <Card className="p-6">
+        <div className="space-y-4">
           <label className="block text-sm">
-            <span className="text-midnight-100">Document</span>
-            <select value={documentId} onChange={(e) => setDocumentId(e.target.value)} className="w-full mt-1 p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50">
+            <span className="mb-1 block font-medium text-ink-600">Document</span>
+            <select value={documentId} onChange={(e) => setDocumentId(e.target.value)} className="mt-1 w-full rounded-full border border-ink-100 bg-white px-4 py-2.5 text-ink-700">
               <option value="">— sélectionnez —</option>
               {docs.map((d) => (
                 <option key={d.id} value={d.id}>{d.title} (stock: {d.stock})</option>
@@ -40,11 +41,11 @@ export default function ReservationsPage() {
 
           <Input label="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <label className="block text-sm">
-            <span className="text-midnight-100">Quantité</span>
-            <input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} className="w-full mt-1 p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50" />
+            <span className="mb-1 block font-medium text-ink-600">Quantité</span>
+            <input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} className="mt-1 w-full rounded-full border border-ink-100 bg-white px-4 py-2.5 text-ink-700" />
           </label>
 
-          <div>
+          <div className="pt-2">
             <Button onClick={reserve}>Réserver</Button>
           </div>
         </div>

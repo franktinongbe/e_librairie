@@ -10,6 +10,7 @@ import { formatCFA } from '../../lib/format';
 export default function AdminAddDocument(){
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
+  const [pageCount, setPageCount] = useState('');
   const [image, setImage] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [price, setPrice] = useState('0');
@@ -33,6 +34,7 @@ export default function AdminAddDocument(){
     if (!title) return setErr('Le titre est requis');
     try{
       const payload: any = { title, author, price: Number(price), stock: Number(stock) };
+      if (pageCount && pageCount !== '') payload.pageCount = Number(pageCount);
       if (image) payload.image = image;
       if (imageFile) {
         const toBase64 = (f: File) => new Promise<string>((res, rej) => {
@@ -61,6 +63,7 @@ export default function AdminAddDocument(){
               <form onSubmit={submit} className="space-y-3">
                 <Input label="Titre" value={title} onChange={(e)=>setTitle(e.target.value)} />
                 <Input label="Auteur" value={author} onChange={(e)=>setAuthor(e.target.value)} />
+                <Input label="Nombre de pages" type="number" min="1" value={pageCount} onChange={(e)=>setPageCount(e.target.value)} />
                 <div>
                   <input type="file" accept="image/*" onChange={(e:any)=>setImageFile(e.target.files?.[0]||null)} className="w-full" />
                   <div className="text-sm text-midnight-300 mt-1">OU</div>
@@ -98,6 +101,7 @@ export default function AdminAddDocument(){
                 <div>
                   <div className="font-medium text-midnight-50 mb-1">{title || 'Titre de l\'article'}</div>
                   <div className="text-sm text-midnight-300">{author || 'Auteur'}</div>
+                  <div className="text-sm text-midnight-300">{pageCount ? `${pageCount} pages` : 'Nombre de pages non défini'}</div>
                   <div className="text-sm text-midnight-300 mt-2">Prix: {formatCFA(Number(price)||0)}</div>
                   <div className="text-sm text-midnight-300">Stock: {stock}</div>
                 </div>

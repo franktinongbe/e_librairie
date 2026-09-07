@@ -10,6 +10,8 @@ export default function AdminDocumentsPage() {
 
   // États du formulaire
   const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [pageCount, setPageCount] = useState('');
   const [price, setPrice] = useState('0');
   const [stock, setStock] = useState('0');
   const [image, setImage] = useState('');
@@ -44,6 +46,8 @@ export default function AdminDocumentsPage() {
 
   const resetForm = () => {
     setTitle('');
+    setAuthor('');
+    setPageCount('');
     setPrice('0');
     setStock('0');
     setImage('');
@@ -73,6 +77,8 @@ export default function AdminDocumentsPage() {
 
       const payload: any = {
         title,
+        author: author || undefined,
+        pageCount: pageCount ? Number(pageCount) : undefined,
         price: parseFloat(price),
         stock: parseInt(stock, 10),
       };
@@ -112,6 +118,20 @@ export default function AdminDocumentsPage() {
                   onChange={(e) => setTitle(e.target.value)}
                   className="w-full p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
                   required
+                />
+                <input
+                  placeholder="Auteur"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  className="w-full p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
+                />
+                <input
+                  placeholder="Nombre de pages"
+                  type="number"
+                  min="1"
+                  value={pageCount}
+                  onChange={(e) => setPageCount(e.target.value)}
+                  className="w-full p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
                 />
                 <div>
                   <input

@@ -4,13 +4,13 @@ import Sidebar from './Sidebar';
 
 export default function Layout({ children, withSidebar = true }: { children: React.ReactNode; withSidebar?: boolean }){
   return (
-    <div className="min-h-screen flex flex-col bg-midnight-900 text-midnight-50">
+    <div className="min-h-screen flex flex-col bg-transparent text-ink-700">
       <Navbar />
       <div className="flex flex-1">
         {withSidebar && (
           <Sidebar />
         )}
-        <main className="flex-1 p-6 bg-midnight-800/60 backdrop-blur-sm">{children}</main>
+        <main className="flex-1 p-0">{children}</main>
       </div>
       <Footer />
     </div>
