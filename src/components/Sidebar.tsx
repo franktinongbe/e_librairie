@@ -26,7 +26,7 @@ export default function Sidebar(){
 
         {isAdmin && (
           <>
-            <li className="mt-5 border-t border-ink-100 pt-4 text-xs font-semibold uppercase tracking-[0.2em] text-amber-400">Admin</li>
+            <li className="mt-5 border-t border-ink-100 pt-4 text-xs font-semibold uppercase tracking-[0.2em] text-amber-600">Admin</li>
             <li><Link href="/admin/documents" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Gérer les documents</Link></li>
             <li><Link href="/admin/categories" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Gérer les catégories</Link></li>
             <li><Link href="/admin/suppliers" className="block rounded-full px-3 py-2 text-sm font-medium text-ink-600 hover:bg-paper-100 hover:text-ink-700">Fournisseurs</Link></li>

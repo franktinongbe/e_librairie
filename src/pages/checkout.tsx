@@ -22,9 +22,6 @@ export default function Checkout() {
 
   async function submit() {
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      if (!token) return alert('Vous devez être connecté pour passer une commande.');
-
       const res = await postJson('/api/sales/create', {
         items: cart,
         customerName,
@@ -41,7 +38,7 @@ export default function Checkout() {
 
   return (
     <main className="container py-6">
-      <h1 className="text-2xl font-bold mb-4 text-midnight-50">Paiement</h1>
+      <h1 className="text-2xl font-bold mb-4 text-ink-50">Paiement</h1>
       <Card>
         <div className="space-y-4">
           <Input label="Nom du client" value={customerName} onChange={(e)=>setCustomerName(e.target.value)} />

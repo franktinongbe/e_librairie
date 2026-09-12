@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
+import PageHeader from '@/components/ui/PageHeader';
 import { getJson, postJson, putJson, deleteJson } from '@/lib/api';
 import { formatCFA } from '@/lib/format';
 
@@ -100,14 +101,17 @@ export default function AdminDocumentsPage() {
   return (
     <Layout>
       <div className="container py-6">
+        <div>
+          <PageHeader title="Gérer les documents" backHref="/admin" actions={<></>} />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Colonne gauche : Formulaire & Suggestions */}
           <div className="md:col-span-1 space-y-4">
             
             {/* Formulaire de création */}
-            <div className="p-4 rounded-lg bg-midnight-800 border border-midnight-700 shadow-md">
-              <h2 className="text-lg font-semibold mb-3 text-midnight-50">Créer un article</h2>
+            <div className="p-4 rounded-lg bg-ink-700 border border-ink-700 shadow-md">
+              <h2 className="text-lg font-semibold mb-3 text-ink-50">Créer un article</h2>
               {err && <div className="text-red-400 text-sm mb-3">{err}</div>}
               {msg && <div className="text-green-400 text-sm mb-3">{msg}</div>}
               
@@ -116,14 +120,14 @@ export default function AdminDocumentsPage() {
                   placeholder="Titre"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
+                  className="w-full p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm"
                   required
                 />
                 <input
                   placeholder="Auteur"
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
-                  className="w-full p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
+                  className="w-full p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm"
                 />
                 <input
                   placeholder="Nombre de pages"
@@ -131,28 +135,28 @@ export default function AdminDocumentsPage() {
                   min="1"
                   value={pageCount}
                   onChange={(e) => setPageCount(e.target.value)}
-                  className="w-full p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
+                  className="w-full p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm"
                 />
                 <div>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-                    className="w-full text-xs text-midnight-300"
+                    className="w-full text-xs text-ink-300"
                   />
-                  <div className="text-xs text-midnight-300 my-1 text-center">OU</div>
+                  <div className="text-xs text-ink-300 my-1 text-center">OU</div>
                   <input
                     placeholder="Image (URL)"
                     value={image}
                     onChange={(e) => setImage(e.target.value)}
-                    className="w-full p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
+                    className="w-full p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm"
                   />
                 </div>
                 <input
                   placeholder="ISBN / Référence"
                   value={reference}
                   onChange={(e) => setReference(e.target.value)}
-                  className="w-full p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
+                  className="w-full p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm"
                 />
                 <div className="flex gap-2">
                   <input
@@ -160,20 +164,20 @@ export default function AdminDocumentsPage() {
                     type="number"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className="w-1/2 p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
+                    className="w-1/2 p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm"
                   />
                   <input
                     placeholder="Stock"
                     type="number"
                     value={stock}
                     onChange={(e) => setStock(e.target.value)}
-                    className="w-1/2 p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm"
+                    className="w-1/2 p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm"
                   />
                 </div>
                 <select
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
-                  className="p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm w-full"
+                  className="p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm w-full"
                 >
                   <option value="">— Catégorie —</option>
                   {categories.map((c: any) => (
@@ -185,7 +189,7 @@ export default function AdminDocumentsPage() {
                 <select
                   value={supplierId}
                   onChange={(e) => setSupplierId(e.target.value)}
-                  className="p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50 text-sm w-full"
+                  className="p-2 rounded bg-ink-700 border border-ink-700 text-ink-50 text-sm w-full"
                 >
                   <option value="">— Fournisseur —</option>
                   {suppliers.map((s: any) => (
@@ -195,13 +199,13 @@ export default function AdminDocumentsPage() {
                   ))}
                 </select>
                 <div className="flex gap-2 pt-2">
-                  <button type="submit" className="px-3 py-2 bg-midnight-500 text-white rounded text-sm hover:bg-midnight-400">
+                  <button type="submit" className="px-3 py-2 bg-ink-500 text-white rounded text-sm hover:bg-ink-400">
                     Créer
                   </button>
                   <button
                     type="button"
                     onClick={resetForm}
-                    className="px-3 py-2 bg-midnight-700 text-midnight-200 rounded text-sm hover:bg-midnight-600"
+                    className="px-3 py-2 bg-ink-700 text-ink-200 rounded text-sm hover:bg-ink-600"
                   >
                     Réinitialiser
                   </button>
@@ -210,18 +214,18 @@ export default function AdminDocumentsPage() {
             </div>
 
             {/* Suggestions de renouvellement */}
-            <div className="p-4 rounded-lg bg-midnight-800 border border-midnight-700 shadow-md">
-              <h3 className="font-semibold text-midnight-50">Suggestions de renouvellement</h3>
-              <p className="text-xs text-midnight-300">Catégories avec moins de 5 articles</p>
+            <div className="p-4 rounded-lg bg-ink-700 border border-ink-700 shadow-md">
+              <h3 className="font-semibold text-ink-50">Suggestions de renouvellement</h3>
+              <p className="text-xs text-ink-300">Catégories avec moins de 5 articles</p>
               <ul className="mt-3 space-y-2">
                 {categories
                   .filter((c: any) => (c.documents?.length || 0) < 5)
                   .map((c: any) => (
                     <li
                       key={c.id}
-                      className="p-2 rounded bg-midnight-800 border border-midnight-700 flex justify-between items-center"
+                      className="p-2 rounded bg-ink-700 border border-ink-700 flex justify-between items-center"
                     >
-                      <div className="text-xs text-midnight-50">
+                      <div className="text-xs text-ink-50">
                         {c.name} — {c.documents?.length || 0} articles
                       </div>
                       <button
@@ -256,7 +260,7 @@ export default function AdminDocumentsPage() {
                           }
                           setLoadingSuggest(false);
                         }}
-                        className="px-2 py-1 text-xs bg-midnight-500 text-white rounded hover:bg-midnight-400 disabled:opacity-50"
+                        className="px-2 py-1 text-xs bg-ink-500 text-white rounded hover:bg-ink-400 disabled:opacity-50"
                       >
                         Suggérer
                       </button>
@@ -268,13 +272,13 @@ export default function AdminDocumentsPage() {
 
           {/* Colonne droite : Liste des articles */}
           <div className="md:col-span-2">
-            <h2 className="font-semibold mb-3 text-midnight-50 text-lg">Liste des articles</h2>
+            <h2 className="font-semibold mb-3 text-ink-50 text-lg">Liste des articles</h2>
             <div className="space-y-3">
               {docs.map((d: any) => (
-                <div key={d.id} className="p-4 rounded-lg bg-midnight-800 border border-midnight-700 shadow-md flex items-center justify-between">
+                <div key={d.id} className="p-4 rounded-lg bg-ink-700 border border-ink-700 shadow-md flex items-center justify-between">
                   <div>
-                    <div className="font-medium text-midnight-50">{d.title}</div>
-                    <div className="text-sm text-midnight-300">
+                    <div className="font-medium text-ink-50">{d.title}</div>
+                    <div className="text-sm text-ink-300">
                       Prix: {formatCFA(d.price)} — Stock: {d.stock}
                     </div>
                   </div>
@@ -290,7 +294,7 @@ export default function AdminDocumentsPage() {
                           setErr(e.message || 'Erreur');
                         }
                       }}
-                      className="px-2 py-1 bg-midnight-500 text-white text-xs rounded hover:bg-midnight-400"
+                      className="px-2 py-1 bg-ink-500 text-white text-xs rounded hover:bg-ink-400"
                     >
                       Éditer
                     </button>

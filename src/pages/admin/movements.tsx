@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
+import PageHeader from '../../components/ui/PageHeader';
 import { getJson, postJson } from '../../lib/api';
 
 export default function AdminMovements(){
@@ -18,21 +19,21 @@ export default function AdminMovements(){
   return (
     <Layout>
       <div className="container py-6">
-        <h1 className="text-2xl font-bold mb-4 text-midnight-50">Mouvements</h1>
+        <PageHeader title="Mouvements" backHref="/admin" />
         <form onSubmit={create} className="mb-4 space-y-2">
-          <input value={articleId} onChange={(e)=>setArticleId(e.target.value)} placeholder="Article ID" className="p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50" />
-          <input value={quantity} onChange={(e)=>setQuantity(e.target.value)} placeholder="Quantité" className="p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50" />
-          <select value={type} onChange={(e)=>setType(e.target.value)} className="p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50">
+          <input value={articleId} onChange={(e)=>setArticleId(e.target.value)} placeholder="Article ID" className="p-2 rounded bg-ink-700 border border-ink-700 text-ink-50" />
+          <input value={quantity} onChange={(e)=>setQuantity(e.target.value)} placeholder="Quantité" className="p-2 rounded bg-ink-700 border border-ink-700 text-ink-50" />
+          <select value={type} onChange={(e)=>setType(e.target.value)} className="p-2 rounded bg-ink-700 border border-ink-700 text-ink-50">
             <option>ENTREE</option>
             <option>SORTIE</option>
             <option>VENTE</option>
             <option>RETOUR</option>
             <option>AJUSTEMENT</option>
           </select>
-          <button className="px-3 py-2 bg-midnight-500 text-white rounded">Créer</button>
+          <button className="px-3 py-2 bg-ink-500 text-white rounded">Créer</button>
         </form>
         <ul className="space-y-2">
-          {movements.map(m=> <li key={m.id} className="p-2 rounded bg-midnight-800 border border-midnight-700">{m.type} — {m.quantity} (Article {m.articleId})</li>)}
+          {movements.map(m=> <li key={m.id} className="p-2 rounded bg-ink-700 border border-ink-700">{m.type} — {m.quantity} (Article {m.articleId})</li>)}
         </ul>
       </div>
     </Layout>

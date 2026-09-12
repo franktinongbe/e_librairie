@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
 import { generateInvoicePdf } from '../../../lib/invoice';
 import { sendMail } from '../../../lib/mailer';
+import { getPayloadFromRequest } from '../../../lib/auth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -20,6 +21,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: 'Aucun email client pour cette facture' });
       }
 
+      const payload = getPayloadFromRequest(req);
+      // allow admin or owner by email or owner by user id
+      const qEmail = String(req.query.email || '').trim();
+      const isOwnerByEmail = qEmail && qEmail === sale.customerEmail;
+      const isOwnerById = payload && sale.customerId && Number(payload.sub) === Number(sale.customerId);
+      if (!(payload && payload.role === 'ADMIN') && !isOwnerByEmail && !isOwnerById) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+
       const pdf = await generateInvoicePdf(sale as any, invoice);
       await sendMail({
         to: sale.customerEmail,
@@ -35,6 +45,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method !== 'GET') return res.status(405).end('Method Not Allowed');
+
+    // GET PDF: allow admin or owner by email or id
+    const pdfPayload = getPayloadFromRequest(req);
+    const queryEmail = String(req.query.email || '').trim();
+    const ownerByEmail = queryEmail && queryEmail === invoice.sale.customerEmail;
+    const ownerById = pdfPayload && invoice.sale.customerId && Number(pdfPayload.sub) === Number(invoice.sale.customerId);
+    if (!(pdfPayload && pdfPayload.role === 'ADMIN') && !ownerByEmail && !ownerById) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
 
     const pdf = await generateInvoicePdf(invoice.sale, invoice);
     res.setHeader('Content-Type', 'application/pdf');

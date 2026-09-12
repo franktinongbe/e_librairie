@@ -26,16 +26,16 @@ export default function Dashboard(){
   return (
     <Layout>
       <div className="container py-8 md:py-10">
-        <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-400">Tableau de bord</p>
+        <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-600">Tableau de bord</p>
         <h2 className="mb-5 text-3xl font-bold text-ink-700">Vue d’ensemble</h2>
         {stats ? (
           <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Card className="p-5">
-              <div className="text-sm uppercase tracking-[0.18em] text-amber-400">Documents</div>
+              <div className="text-sm uppercase tracking-[0.18em] text-amber-600">Documents</div>
               <div className="mt-2 text-3xl font-bold text-ink-700">{stats.documents}</div>
             </Card>
             <Card className="p-5">
-              <div className="text-sm uppercase tracking-[0.18em] text-amber-400">Réservations</div>
+              <div className="text-sm uppercase tracking-[0.18em] text-amber-600">Réservations</div>
               <div className="mt-2 text-3xl font-bold text-ink-700">{stats.reservations}</div>
             </Card>
           </div>

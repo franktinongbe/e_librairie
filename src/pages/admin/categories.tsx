@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
+import PageHeader from '../../components/ui/PageHeader';
 import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
@@ -35,7 +36,7 @@ export default function AdminCategories(){
   return (
     <Layout>
       <div className="container py-6">
-        <h1 className="text-2xl font-bold mb-4 text-midnight-50">Gestion des catégories</h1>
+        <PageHeader title="Gestion des catégories" backHref="/admin" />
         {err && <div className="mb-3 text-red-400">{err}</div>}
         {msg && <div className="mb-3 text-green-400">{msg}</div>}
 
@@ -53,13 +54,13 @@ export default function AdminCategories(){
           </div>
 
           <div className="md:col-span-2">
-            <h2 className="font-semibold text-midnight-50 mb-3">Liste des catégories</h2>
+            <h2 className="font-semibold text-ink-50 mb-3">Liste des catégories</h2>
             <div className="space-y-3">
               {categories.map((c:any)=>(
                 <Card key={c.id} className="flex justify-between items-center">
                   <div>
-                    <div className="font-medium text-midnight-50">{c.name}</div>
-                    <div className="text-sm text-midnight-300">{(c.documents||[]).length} articles</div>
+                    <div className="font-medium text-ink-50">{c.name}</div>
+                    <div className="text-sm text-ink-300">{(c.documents||[]).length} articles</div>
                   </div>
                   <div className="flex gap-2">
                     <button onClick={async ()=>{
@@ -69,7 +70,7 @@ export default function AdminCategories(){
                           await putJson('/api/categories', { id: c.id, name: newName });
                           await load();
                         }catch(e:any){ setErr(e.message||'Erreur'); }
-                    }} className="px-2 py-1 bg-midnight-500 text-white rounded">Éditer</button>
+                    }} className="px-2 py-1 bg-ink-500 text-white rounded">Éditer</button>
                     <button onClick={async ()=>{
                       if (!confirm('Supprimer la catégorie ?')) return;
                       try{

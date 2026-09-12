@@ -4,6 +4,9 @@ import prisma from '../../../lib/prisma';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
+      // listing all reservations is admin-only
+      const { ensureAdmin } = await import('../../../lib/auth');
+      if (!ensureAdmin(req, res)) return;
       const list = await prisma.reservation.findMany({ orderBy: { createdAt: 'desc' } });
       return res.status(200).json(list);
     }
@@ -12,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const { documentId, userEmail, quantity } = req.body;
       if (!documentId || !userEmail || !quantity) return res.status(400).json({ error: 'documentId, userEmail and quantity required' });
 
-      // check availability
+      // A simple visitor can reserve without being logged in; admin pages remain protected separately.
       const doc = await prisma.document.findUnique({ where: { id: Number(documentId) } });
       if (!doc) return res.status(404).json({ error: 'document not found' });
       if (doc.stock < Number(quantity)) return res.status(400).json({ error: 'insufficient stock for reservation' });

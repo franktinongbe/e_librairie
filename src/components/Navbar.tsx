@@ -9,11 +9,35 @@ export default function Navbar() {
 
   useEffect(() => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (token) {
-      getJson('/api/auth/me').then(setUser).catch(() => setUser(null));
-      fetchBalance();
+    if (!token) {
+      setUser(null);
+      setBalance(null);
+      return;
     }
+
+    getJson('/api/auth/me')
+      .then((me) => {
+        setUser(me);
+        if (me?.role === 'ADMIN') {
+          fetchBalance();
+        }
+      })
+      .catch(() => {
+        setUser(null);
+        setBalance(null);
+      });
   }, []);
+
+  useEffect(() => {
+    if (user?.role === 'ADMIN') {
+      fetchBalance();
+      return;
+    }
+
+    if (user && user.role !== 'ADMIN') {
+      setBalance(null);
+    }
+  }, [user]);
 
   async function fetchBalance() {
     if (typeof window === 'undefined') return;
@@ -39,7 +63,7 @@ export default function Navbar() {
     <nav className="border-b border-ink-100 bg-white/80 backdrop-blur-sm text-ink-700 shadow-sm">
       <div className="container flex items-center justify-between py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-sm font-bold text-amber-400">E</div>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-sm font-bold text-amber-600">E</div>
           <Link href="/" className="text-xl font-bold tracking-[0.08em] uppercase text-ink-700">E-Library</Link>
         </div>
 
@@ -55,7 +79,6 @@ export default function Navbar() {
           ) : (
             <>
               <Link href="/login" className="text-ink-500 hover:text-ink-700">Connexion</Link>
-              <Link href="/register" className="text-ink-500 hover:text-ink-700">Inscription</Link>
             </>
           )}
         </div>

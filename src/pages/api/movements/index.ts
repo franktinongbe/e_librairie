@@ -5,6 +5,8 @@ import { ensureAdmin } from '../../../lib/auth';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
+      // admin only
+      if (!ensureAdmin(req, res)) return;
       const moves = await prisma.movement.findMany({ orderBy: { movementDate: 'desc' } });
       return res.status(200).json(moves);
     }

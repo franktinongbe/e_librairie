@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
+import PageHeader from '../../components/ui/PageHeader';
 import { getJson } from '../../lib/api';
 
 export default function AdminInvoices(){
@@ -14,16 +15,16 @@ export default function AdminInvoices(){
   return (
     <Layout>
       <div className="container py-6">
-        <h1 className="text-2xl font-bold mb-4 text-midnight-50">Factures</h1>
+        <PageHeader title="Factures" backHref="/admin" />
         <ul className="space-y-3">
           {invoices.map(inv=> (
-            <div key={inv.id} className="p-3 rounded bg-midnight-800 border border-midnight-700 flex justify-between items-center">
+            <div key={inv.id} className="p-3 rounded bg-ink-700 border border-ink-700 flex justify-between items-center">
               <div>
-                <div className="text-midnight-50">Facture #{inv.id} — Commande #{inv.saleId} — {inv.customerEmail || '—'}</div>
-                <div className="text-sm text-midnight-300">Créée: {new Date(inv.createdAt).toLocaleString()}</div>
+                <div className="text-ink-50">Facture #{inv.id} — Commande #{inv.saleId} — {inv.customerEmail || '—'}</div>
+                <div className="text-sm text-ink-300">Créée: {new Date(inv.createdAt).toLocaleString()}</div>
               </div>
               <div className="flex gap-2">
-                <a href={`/api/invoices/${inv.id}`} className="px-3 py-1 bg-midnight-500 text-white rounded">Télécharger</a>
+                <a href={`/api/invoices/${inv.id}`} className="px-3 py-1 bg-ink-500 text-white rounded">Télécharger</a>
               </div>
             </div>
           ))}

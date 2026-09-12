@@ -4,7 +4,7 @@ import PDFDocument from 'pdfkit';
 export async function generateInvoicePdf(sale: Sale & { items?: any[] }, invoice: Invoice) {
   const doc = new PDFDocument({ size: 'A4', margin: 50 });
   const chunks: Buffer[] = [];
-  doc.on('data', (c) => chunks.push(c));
+  doc.on('data', (c: Buffer) => chunks.push(c));
 
   doc.fontSize(20).text('Facture', { align: 'center' });
   doc.moveDown();

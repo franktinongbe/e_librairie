@@ -45,7 +45,7 @@ export default function Cart() {
 
   return (
     <main className="container py-8 md:py-10">
-      <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-400">Panier</p>
+      <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-600">Panier</p>
       <h1 className="mb-6 text-3xl font-bold text-ink-700">Votre sélection</h1>
       <div className="space-y-4">
         {cart.length === 0 && <Card className="p-5 text-ink-500">Aucun article dans le panier</Card>}
@@ -73,7 +73,7 @@ export default function Cart() {
 
       {recommended.length > 0 && (
         <div className="mt-10">
-          <p className="mb-4 text-xs uppercase tracking-[0.2em] text-amber-400">Suggestions</p>
+          <p className="mb-4 text-xs uppercase tracking-[0.2em] text-amber-600">Suggestions</p>
           <h2 className="mb-4 text-2xl font-bold text-ink-700">Complétez votre panier</h2>
           <div className="grid gap-4 md:grid-cols-3">
             {recommended.map((d) => (
@@ -85,7 +85,7 @@ export default function Cart() {
                     <div className="flex h-full items-center justify-center text-sm text-ink-300">Aucune image</div>
                   )}
                 </div>
-                <div className="text-sm uppercase tracking-[0.18em] text-amber-400">Livre recommandé</div>
+                <div className="text-sm uppercase tracking-[0.18em] text-amber-600">Livre recommandé</div>
                 <h3 className="mt-2 text-lg font-semibold text-ink-700">{d.title}</h3>
                 <div className="mt-1 text-sm text-ink-500">{d.author || 'Auteur inconnu'} • {d.pageCount ? `${d.pageCount} pages` : 'pages non spécifiées'}</div>
                 <div className="mt-3 flex items-center justify-between">

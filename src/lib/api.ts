@@ -1,4 +1,4 @@
-function getAuthHeader() {
+function getAuthHeader(): Record<string, string> {
   try {
     if (typeof window === 'undefined') return {};
     const token = localStorage.getItem('token');
@@ -18,8 +18,8 @@ async function parseError(res: Response) {
 }
 
 export async function getJson(path: string) {
-  const headers = { ...getAuthHeader() };
-  const res = await fetch(path, { headers });
+  const headers: Record<string, string> = { ...getAuthHeader() };
+  const res = await fetch(path, { headers: headers as HeadersInit });
   if (!res.ok) {
     const err = await parseError(res);
     throw new Error(err.error || JSON.stringify(err) || res.statusText);
@@ -31,8 +31,8 @@ export async function getJson(path: string) {
 }
 
 export async function postJson(path: string, body: any) {
-  const headers = { 'Content-Type': 'application/json', ...getAuthHeader() };
-  const res = await fetch(path, { method: 'POST', headers, body: JSON.stringify(body) });
+  const headers: Record<string, string> = { 'Content-Type': 'application/json', ...getAuthHeader() };
+  const res = await fetch(path, { method: 'POST', headers: headers as HeadersInit, body: JSON.stringify(body) });
   if (!res.ok) {
     const err = await parseError(res);
     throw new Error(err.error || JSON.stringify(err) || res.statusText);
@@ -44,8 +44,8 @@ export async function postJson(path: string, body: any) {
 }
 
 export async function putJson(path: string, body: any) {
-  const headers = { 'Content-Type': 'application/json', ...getAuthHeader() };
-  const res = await fetch(path, { method: 'PUT', headers, body: JSON.stringify(body) });
+  const headers: Record<string, string> = { 'Content-Type': 'application/json', ...getAuthHeader() };
+  const res = await fetch(path, { method: 'PUT', headers: headers as HeadersInit, body: JSON.stringify(body) });
   if (!res.ok) {
     const err = await parseError(res);
     throw new Error(err.error || JSON.stringify(err) || res.statusText);
@@ -57,8 +57,8 @@ export async function putJson(path: string, body: any) {
 }
 
 export async function deleteJson(path: string, body?: any) {
-  const headers = { 'Content-Type': 'application/json', ...getAuthHeader() };
-  const opts: any = { method: 'DELETE', headers };
+  const headers: Record<string, string> = { 'Content-Type': 'application/json', ...getAuthHeader() };
+  const opts: any = { method: 'DELETE', headers: headers as HeadersInit };
   if (body) opts.body = JSON.stringify(body);
   const res = await fetch(path, opts);
   if (!res.ok) {

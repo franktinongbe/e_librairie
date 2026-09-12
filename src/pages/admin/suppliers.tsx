@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
+import PageHeader from '../../components/ui/PageHeader';
 import { getJson, postJson } from '../../lib/api';
 
 export default function AdminSuppliers(){
@@ -16,13 +17,13 @@ export default function AdminSuppliers(){
   return (
     <Layout>
       <div className="container py-6">
-        <h1 className="text-2xl font-bold mb-4 text-midnight-50">Fournisseurs</h1>
+        <PageHeader title="Fournisseurs" backHref="/admin" />
         <form onSubmit={create} className="mb-4 flex gap-2">
-          <input value={name} onChange={(e)=>setName(e.target.value)} placeholder="Nom" className="p-2 rounded bg-midnight-800 border border-midnight-700 text-midnight-50" />
-          <button className="px-3 py-2 bg-midnight-500 text-white rounded">Créer</button>
+          <input value={name} onChange={(e)=>setName(e.target.value)} placeholder="Nom" className="p-2 rounded bg-ink-700 border border-ink-700 text-ink-50" />
+          <button className="px-3 py-2 bg-ink-500 text-white rounded">Créer</button>
         </form>
         <ul className="space-y-2">
-          {suppliers.map(s=> <li key={s.id} className="p-2 rounded bg-midnight-800 border border-midnight-700">{s.name}</li>)}
+          {suppliers.map(s=> <li key={s.id} className="p-2 rounded bg-ink-700 border border-ink-700">{s.name}</li>)}
         </ul>
       </div>
     </Layout>

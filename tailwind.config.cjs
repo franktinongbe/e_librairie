@@ -20,6 +20,18 @@ module.exports = {
           600: '#1f1b1a',
           700: '#171312'
         },
+        // Palette "midnight" : alias proche de `ink` utilisée par l'UI admin
+        midnight: {
+          50: '#f5efe9',
+          100: '#d7c8b9',
+          200: '#bca78d',
+          300: '#8f725d',
+          400: '#4f433d',
+          500: '#2d2826',
+          600: '#1f1b1a',
+          700: '#171312',
+          800: '#0b0b0b'
+        },
         amber: {
           50: '#fff5e2',
           100: '#f6d9a7',

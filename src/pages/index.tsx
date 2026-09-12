@@ -69,26 +69,26 @@ export default function Home() {
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
           <Card className="p-5">
-            <div className="text-xs uppercase tracking-[0.2em] text-amber-400 mb-3">Service</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-amber-600 mb-3">Service</div>
             <h3 className="text-xl font-semibold text-ink-600 mb-2">Étude et accès</h3>
             <p className="text-sm text-ink-500">Statut actuel : <span className="font-medium text-ink-600">{health}</span></p>
           </Card>
           <Card className="p-5">
-            <div className="text-xs uppercase tracking-[0.2em] text-amber-400 mb-3">Explorer</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-amber-600 mb-3">Explorer</div>
             <h3 className="text-xl font-semibold text-ink-600 mb-2">Catégories</h3>
             <ul className="space-y-2 text-sm text-ink-500">
               {categories.slice(0, 5).map((c) => (
                 <li key={c.id}>
                   <Link href={`/catalog?category=${c.id}`} className="flex items-center justify-between gap-4 hover:text-ink-600">
                     <span>{c.name}</span>
-                    <span className="text-amber-400">({(c.documents || []).length})</span>
+                      <span className="text-amber-600">({(c.documents || []).length})</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </Card>
           <Card className="p-5">
-            <div className="text-xs uppercase tracking-[0.2em] text-amber-400 mb-3">Sélection</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-amber-600 mb-3">Sélection</div>
             <h3 className="text-xl font-semibold text-ink-600 mb-2">Mises en avant</h3>
             <div className="space-y-3">
               {docs.map((d) => (
@@ -113,7 +113,7 @@ export default function Home() {
         <section className="mb-10">
           <div className="flex items-end justify-between gap-4 mb-5">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-amber-400 mb-2">Nouveautés</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-amber-600 mb-2">Nouveautés</p>
               <h2 className="text-3xl font-semibold text-ink-600">À découvrir</h2>
             </div>
             <Link href="/catalog" className="text-sm font-medium text-ink-500 hover:text-ink-600">Voir tout →</Link>
@@ -130,7 +130,7 @@ export default function Home() {
                   )}
                 </div>
                 <div className="flex flex-1 flex-col">
-                  <div className="text-xs uppercase tracking-[0.18em] text-amber-400 mb-2">Edition</div>
+                    <div className="text-xs uppercase tracking-[0.18em] text-amber-600 mb-2">Edition</div>
                   <h3 className="font-semibold text-xl text-ink-600 mb-2">{d.title}</h3>
                   <p className="text-sm text-ink-500 mb-4">{d.author || 'Auteur inconnu'}</p>
                   <div className="mt-auto flex items-center justify-between gap-2 pt-3 border-t border-ink-100">

@@ -2,15 +2,19 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../../lib/prisma';
 import { generateInvoicePdf } from '../../../lib/invoice';
 import { sendMail } from '../../../lib/mailer';
-import { requireRole } from '../../../lib/auth';
+import { getPayloadFromRequest } from '../../../lib/auth';
 import { orderConfirmationTemplate } from '../../../lib/emailTemplates';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method !== 'POST') return res.status(405).end('Method Not Allowed');
 
-    // Roles allowed to create a sale: VENDEUR, GESTIONNAIRE, ADMIN
-    if (!requireRole(req, res, ['VENDEUR', 'GESTIONNAIRE', 'ADMIN'])) return;
+    const payload = getPayloadFromRequest(req);
+    const allowedRoles = ['VENDEUR', 'GESTIONNAIRE', 'ADMIN'];
+    if (payload && !allowedRoles.includes(payload.role)) {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
     const { items, customerEmail, customerName, customerPhone, customerAddress } = req.body;
     if (!items || !Array.isArray(items) || items.length === 0) return res.status(400).json({ error: 'items required' });
     if (!customerEmail || !String(customerEmail).trim()) return res.status(400).json({ error: 'customer email required' });
@@ -44,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           customerPhone: String(customerPhone || '').trim() || null,
           customerAddress: String(customerAddress || '').trim() || null,
           customerEmail: String(customerEmail || '').trim() || null,
-          customerId: null,
+          customerId: payload ? Number(payload.sub) : null,
         }
       });
 

@@ -4,6 +4,7 @@ import Layout from '../../components/Layout';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
+import PageHeader from '../../components/ui/PageHeader';
 import { getJson, postJson } from '../../lib/api';
 import { formatCFA } from '../../lib/format';
 
@@ -38,7 +39,7 @@ export default function AdminAddDocument(){
       if (image) payload.image = image;
       if (imageFile) {
         const toBase64 = (f: File) => new Promise<string>((res, rej) => {
-          const r = new FileReader(); r.onload = ()=>res(String(r.result)); r.onerror = rej; r.readAsDataURL(f);
+          const r = new FileReader(); r.onload = () => res(String(r.result)); r.onerror = rej; r.readAsDataURL(f);
         });
         payload.image = await toBase64(imageFile);
       }
@@ -55,6 +56,7 @@ export default function AdminAddDocument(){
   return (
     <Layout>
       <div className="container py-6">
+        <PageHeader title="Ajouter un article" backHref="/admin/documents" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-1">
             <Card>
@@ -66,7 +68,7 @@ export default function AdminAddDocument(){
                 <Input label="Nombre de pages" type="number" min="1" value={pageCount} onChange={(e)=>setPageCount(e.target.value)} />
                 <div>
                   <input type="file" accept="image/*" onChange={(e:any)=>setImageFile(e.target.files?.[0]||null)} className="w-full" />
-                  <div className="text-sm text-midnight-300 mt-1">OU</div>
+                  <div className="text-sm text-ink-300 mt-1">OU</div>
                   <Input label="Image (URL)" value={image} onChange={(e)=>setImage(e.target.value)} />
                 </div>
                 <Input label="ISBN / Référence" value={reference} onChange={(e)=>setReference(e.target.value)} />
@@ -74,11 +76,11 @@ export default function AdminAddDocument(){
                   <Input label="Prix (FCFA)" value={price} onChange={(e)=>setPrice(e.target.value)} />
                   <Input label="Stock" value={stock} onChange={(e)=>setStock(e.target.value)} />
                 </div>
-                <select value={categoryId} onChange={(e)=>setCategoryId(e.target.value)} className="w-full rounded-md px-3 py-2 bg-midnight-800 border border-midnight-700 text-midnight-50">
+                <select value={categoryId} onChange={(e)=>setCategoryId(e.target.value)} className="w-full rounded-md px-3 py-2 bg-ink-700 border border-ink-700 text-ink-50">
                   <option value="">— Aucune —</option>
                   {categories.map(c=> <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
-                <select value={supplierId} onChange={(e)=>setSupplierId(e.target.value)} className="w-full rounded-md px-3 py-2 bg-midnight-800 border border-midnight-700 text-midnight-50">
+                <select value={supplierId} onChange={(e)=>setSupplierId(e.target.value)} className="w-full rounded-md px-3 py-2 bg-ink-700 border border-ink-700 text-ink-50">
                   <option value="">— Aucune —</option>
                   {suppliers.map(s=> <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
@@ -95,15 +97,15 @@ export default function AdminAddDocument(){
             <Card>
               <h3 className="font-semibold mb-3">Aperçu</h3>
               <div className="flex gap-4 items-start">
-                <div className="w-48 h-48 bg-midnight-900 rounded overflow-hidden flex items-center justify-center">
-                  {imageFile ? <img src={URL.createObjectURL(imageFile)} alt="preview" className="object-contain h-full w-full" /> : (image ? <img src={image} alt="preview" className="object-contain h-full w-full" /> : <div className="text-sm text-midnight-300">Aucune image</div>)}
+                <div className="w-48 h-48 bg-ink-700 rounded overflow-hidden flex items-center justify-center">
+                  {imageFile ? <img src={URL.createObjectURL(imageFile)} alt="preview" className="object-contain h-full w-full" /> : (image ? <img src={image} alt="preview" className="object-contain h-full w-full" /> : <div className="text-sm text-ink-300">Aucune image</div>)}
                 </div>
                 <div>
-                  <div className="font-medium text-midnight-50 mb-1">{title || 'Titre de l\'article'}</div>
-                  <div className="text-sm text-midnight-300">{author || 'Auteur'}</div>
-                  <div className="text-sm text-midnight-300">{pageCount ? `${pageCount} pages` : 'Nombre de pages non défini'}</div>
-                  <div className="text-sm text-midnight-300 mt-2">Prix: {formatCFA(Number(price)||0)}</div>
-                  <div className="text-sm text-midnight-300">Stock: {stock}</div>
+                  <div className="font-medium text-ink-50 mb-1">{title || 'Titre de l\'article'}</div>
+                  <div className="text-sm text-ink-300">{author || 'Auteur'}</div>
+                  <div className="text-sm text-ink-300">{pageCount ? `${pageCount} pages` : 'Nombre de pages non défini'}</div>
+                  <div className="text-sm text-ink-300 mt-2">Prix: {formatCFA(Number(price)||0)}</div>
+                  <div className="text-sm text-ink-300">Stock: {stock}</div>
                 </div>
               </div>
             </Card>

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
+import { ensureAdmin } from '../../lib/auth';
 
 type UploadBody = {
   file: string; // data URL or base64
@@ -9,6 +10,9 @@ type UploadBody = {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  // admin only
+  if (!ensureAdmin(req, res)) return;
 
   try {
     const body = req.body as UploadBody;

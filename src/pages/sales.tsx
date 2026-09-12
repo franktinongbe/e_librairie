@@ -4,6 +4,7 @@ import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import { getJson } from '../lib/api';
 import { formatCFA } from '../lib/format';
+import PageHeader from '../components/ui/PageHeader';
 
 export default function SalesPage(){
   const [sales, setSales] = useState<any[] | null>(null);
@@ -41,9 +42,8 @@ export default function SalesPage(){
 
   return (
     <Layout>
+      <PageHeader insideContainer subtitle={<p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-600">Ventes</p>} title="Historique des ventes" />
       <div className="container py-8 md:py-10">
-        <p className="mb-2 text-xs uppercase tracking-[0.2em] text-amber-400">Ventes</p>
-        <h1 className="mb-6 text-3xl font-bold text-ink-700">Historique des ventes</h1>
         {err && <div className="mb-3 rounded-full bg-red-50 px-3 py-2 text-sm text-red-600">{err}</div>}
         {sales === null && <Card className="p-5 text-ink-500">Chargement...</Card>}
         {sales && sales.length === 0 && <Card className="p-5 text-ink-500">Aucune vente trouvée</Card>}
